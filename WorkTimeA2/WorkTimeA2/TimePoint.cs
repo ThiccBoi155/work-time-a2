@@ -39,17 +39,22 @@ namespace WorkTimeA2
             Min = hour * 60 + min;
         }
 
-        string addZeroPlace(int i)
+        static string addZeroPlace(int i)
         {
             return i > 9 ? i.ToString() : string.Format("0{0}", i);
         }
 
-        public override string ToString()
+        public static string GetIntInFormat(int totalMin)
         {
-            int min = Min % 60;
-            int hour = (Min - min) / 60;
+            int min = totalMin % 60;
+            int hour = (totalMin - min) / 60;
 
             return string.Format("{0}:{1}", addZeroPlace(hour), addZeroPlace(min));
+        }
+
+        public override string ToString()
+        {
+            return GetIntInFormat(Min);
         }
 
         public static int operator -(TimePoint t1, TimePoint t2)
