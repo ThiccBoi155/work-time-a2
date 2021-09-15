@@ -8,22 +8,24 @@ namespace WorkTimeA2
 {
     static class GetSegmentData
     {
-        public static int GetTotalTime(IList<TimeSpan> segs)
+        public static List<TimeSpan> Segments { set; private get; }
+
+        public static int GetTotalTime()
         {
-            return GetTotalTimeInInterval(segs[0], segs[segs.Count - 1]);
+            return GetTotalTimeInInterval(0, Segments.Count - 1);
         }
 
         // Returns the total time from s1 to s2
-        public static int GetTotalTimeInInterval(TimeSpan s1, TimeSpan s2)
+        public static int GetTotalTimeInInterval(int index1, int index2)
         {
-            return s2.start - s1.start + s2.timeSpan;
+            return Segments[index2].start - Segments[index1].start + Segments[index2].timeSpan;
         }
 
-        public static int GetTotalWithTag(IList<TimeSpan> segs, string tag)
+        public static int GetTotalWithTag(string tag)
         {
             int sum = 0;
 
-            foreach (TimeSpan seg in segs)
+            foreach (TimeSpan seg in Segments)
             {
                 if (seg.tag == tag)
                     sum += seg.timeSpan;
@@ -39,9 +41,9 @@ namespace WorkTimeA2
             return string.Format("{0}%", v);
         }
 
-        public static void PrintTagAndTimeSpan(IList<TimeSpan> segs)
+        public static void PrintTagAndTimeSpan()
         {
-            foreach (TimeSpan segment in segs)
+            foreach (TimeSpan segment in Segments)
             {
                 Console.WriteLine("{0}: {1}", segment.tag, segment.timeSpan);
             }
