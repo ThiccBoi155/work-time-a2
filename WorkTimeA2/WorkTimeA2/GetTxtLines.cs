@@ -57,15 +57,16 @@ namespace WorkTimeA2
                         throw new ArgumentException("Incorrenct time input");
 
                     string subLine;
+                    string nextTag = currentTag;
 
                     // sep + 1 + 4. If there are only 2 or 3 more characters after the seperator, there is no tag.
                     // If there are 4 or more characters after the seperator, there is a tag.
                     if (sep + 5 <= line.Length)
                     {
-                        currentTag = line.Substring(sep + 4);
+                        nextTag = line.Substring(sep + 4);
 
-                        if (!totalTags.Contains(currentTag))
-                            totalTags.Add(currentTag);
+                        if (!totalTags.Contains(nextTag))
+                            totalTags.Add(nextTag);
 
                         subLine = line.Substring(0, 5);
                     }
@@ -90,6 +91,8 @@ namespace WorkTimeA2
 
                     breakNow = false;
                     lastTimePoint = temp;
+
+                    currentTag = nextTag;
                 }
                 else
                     breakNow = true;
