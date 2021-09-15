@@ -31,19 +31,49 @@ namespace WorkTimeA2
             }
         }
 
+        public static List<string> totalTags = new List<string>()
+        {
+            "work",
+            "break"
+        };
+
         public static List<TimeSpan> GetSegments(IEnumerable<string> txtLines)
         {
             TimePoint lastTimePoint = null;
             List<TimeSpan> segments = new List<TimeSpan>();
 
             bool breakNow = false;
+            string currentTag = "work";
 
             foreach (string line in txtLines)
             {
                 Console.WriteLine(line);
                 if (line != "")
                 {
-                    TimePoint temp = new TimePoint(line);
+                    //*
+                    int sep = line.IndexOf(':');
+
+                    if (sep != 1 && sep != 2)
+                        throw new ArgumentException("Incorrenct time input");
+
+                    string subLine;
+
+                    // sep + 1 + 4. If there are only 2 or 3 more characters after the seperator, there is no tag.
+                    // If there are 4 or more characters after the seperator, there is a tag.
+                    if (sep + 5 <= line.Length)
+                    {
+                        currentTag = line.Substring(sep + 4);
+
+                        if (!totalTags.Contains(currentTag))
+                            totalTags.Add(currentTag);
+
+                        subLine = line.Substring(0, 5);
+                    }
+                    else
+                        subLine = line;
+                    //*/
+
+                    TimePoint temp = new TimePoint(subLine);
 
                     if (lastTimePoint != null)
                     {
@@ -52,7 +82,7 @@ namespace WorkTimeA2
                         if (breakNow)
                             tag = "break";
                         else
-                            tag = "work";
+                            tag = currentTag;
 
                         TimeSpan tempTimeSpan = new TimeSpan(lastTimePoint, temp, tag);
                         segments.Add(tempTimeSpan);
@@ -65,7 +95,17 @@ namespace WorkTimeA2
                     breakNow = true;
             }
 
+            Console.WriteLine();
+
+            foreach (string tag in totalTags)
+                Console.WriteLine(tag);
+
             return segments;
+        }
+
+        static void temp()
+        {
+
         }
     }
 }

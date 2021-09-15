@@ -19,17 +19,21 @@ namespace WorkTimeA2
             int totalTime = GetSegmentData.GetTotalTime();
             Console.WriteLine("Total time: {0}", totalTime);
 
-            int workTime = GetSegmentData.GetTotalWithTag("work");
-            Console.WriteLine("Total work time: {0}, {1}", workTime, GetSegmentData.GetPercentage(workTime, totalTime));
-
-            int breakTime = GetSegmentData.GetTotalWithTag("break");
-            Console.WriteLine("Total break time: {0}, {1}", breakTime, GetSegmentData.GetPercentage(breakTime, totalTime));
+            foreach (string tag in GetTxtLines.totalTags)
+                PrintTagStat(totalTime, tag);
 
             Console.WriteLine();
 
             GetSegmentData.PrintTagAndTimeSpan();
 
             Console.ReadLine();
+        }
+
+        static void PrintTagStat(int totalTime, string tag)
+        {
+            int tagTime = GetSegmentData.GetTotalWithTag(tag);
+            Console.WriteLine("Total {0} time: {1}, {2}", tag, tagTime, GetSegmentData.GetPercentage(tagTime, totalTime));
+
         }
     }
 }
